@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=TASA+Orbiter:wght@400..800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-inter: "Inter", sans-serif;
+  --font-tasa: "TASA Orbiter", sans-serif;
+  
+  --color-brand: #01FF75;
+  --color-brand-hover: #00e065;
+  --color-brand-light: #e5fff0;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-inter);
+    background-color: #f9fbfc;
+    color: #1a1a1a;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-tasa);
+  }
+}

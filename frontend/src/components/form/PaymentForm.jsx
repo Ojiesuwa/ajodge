@@ -188,7 +188,7 @@ const PaymentForm = () => {
                         <div className="pt-2 z-10 relative">
                             <Button type="submit" isLoading={isSubmitting} className="w-full flex justify-center items-center py-4 rounded-md shadow-lg shadow-gray-900/10 hover:shadow-gray-900/20 transition-all font-semibold text-base">
                                 <CreditCard className="w-5 h-5 mr-2.5" />
-                                Complete Payment
+                                Proceed to Complete Payment
                             </Button>
                         </div>
                     </form>

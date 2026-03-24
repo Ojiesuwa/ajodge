@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    {
+      "source": "/passport/(.*)",
+      "destination": "https://passport-v2.k8.isw.la/passport/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

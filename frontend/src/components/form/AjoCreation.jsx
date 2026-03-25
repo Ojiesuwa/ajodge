@@ -129,7 +129,7 @@ function AjoCreationForm() {
         className="bg-white rounded-md shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100 p-6 md:p-8"
       >
         <motion.div variants={itemVariants} className="mb-8">
-          <h1 className="text-2xl md:text-3xl font-inter font-semibold text-gray-900 mb-2">
+          <h1 className="text-2xl md:text-3xl font-heading font-semibold text-gray-900 mb-2">
             Create your Ajo
           </h1>
           <p className="text-gray-500 text-sm md:text-base">

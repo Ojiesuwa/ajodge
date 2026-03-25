@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, CheckCircle2, AlertCircle } from "lucide-react";
+import { apiService } from "../../services/api";
 
 function AjoCreationForm() {
   const [formData, setFormData] = useState({
@@ -36,15 +37,42 @@ function AjoCreationForm() {
   };
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    // Clear any previous submit error
+    if (errors.submit) setErrors(prev => ({ ...prev, submit: '' }));
+
     if (validateForm()) {
       setIsSubmitting(true);
-      // Simulate API call
-      setTimeout(() => {
+      try {
+        const searchParams = new URLSearchParams(window.location.search);
+        const groupChatId = searchParams.get('gcid') || "";
+        const messageId = searchParams.get('msid') || "";
+
+        // Send numeric amount without commas
+        const amountVal = formData.amount.replace(/,/g, "");
+        
+        // Ensure duration mapped to label if necessary, but using raw value as per instructions
+        const durationOptionsObj = durationOptions.find(o => o.value === formData.duration);
+        const timeFrameLabel = durationOptionsObj ? durationOptionsObj.label : formData.duration;
+
+        const payload = {
+          groupChatId,
+          sessionName: formData.name,
+          timeFrame: timeFrameLabel, // sending label (e.g. "30 Days") as requested by example
+          amountPerPerson: amountVal,
+          messageId
+        };
+
+        await apiService.createAjoSession(payload);
+        
         setIsSubmitting(false);
         setShowSuccess(true);
-      }, 1500);
+      } catch (error) {
+        console.error("Failed to create Ajo session:", error);
+        setIsSubmitting(false);
+        setErrors(prev => ({ ...prev, submit: error.message || "Failed to create Ajo session. Please try again." }));
+      }
     }
   };
 
@@ -101,7 +129,7 @@ function AjoCreationForm() {
         className="bg-white rounded-md shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-100 p-6 md:p-8"
       >
         <motion.div variants={itemVariants} className="mb-8">
-          <h1 className="text-2xl md:text-3xl font-heading font-semibold text-gray-900 mb-2">
+          <h1 className="text-2xl md:text-3xl font-inter font-semibold text-gray-900 mb-2">
             Create your Ajo
           </h1>
           <p className="text-gray-500 text-sm md:text-base">
@@ -248,6 +276,19 @@ function AjoCreationForm() {
 
           {/* Submit Button */}
           <motion.div variants={itemVariants} className="pt-4">
+            <AnimatePresence>
+              {errors.submit && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="mb-4 p-3 bg-red-50 text-red-600 rounded-xl text-sm flex items-start gap-2 border border-red-100"
+                >
+                  <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+                  <p>{errors.submit}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <motion.button
               whileHover={{ scale: 1.01 }}
               whileTap={{ scale: 0.98 }}

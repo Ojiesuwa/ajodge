@@ -63,6 +63,28 @@ export const apiService = {
   },
 
   // =========================================================
+  //                    AJO CREATION API'S
+  // =========================================================
+  
+  /* Creates a new Ajo session */
+  createAjoSession: async (data) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    };
+
+    const response = await fetch('https://ffb5-105-113-99-50.ngrok-free.app/api/session/create', requestOptions);
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error(errorData.message)
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  },
+
+  // =========================================================
   //                    REGISTRATION FORM API'S
   // =========================================================
   

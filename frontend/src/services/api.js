@@ -96,7 +96,7 @@ export const apiService = {
       body: JSON.stringify(formData)
     };
 
-    const response = await fetch('https://e334-105-113-109-55.ngrok-free.app/api/session/register', requestOptions);
+    const response = await fetch('https://ffb5-105-113-99-50.ngrok-free.app/api/session/register', requestOptions);
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));

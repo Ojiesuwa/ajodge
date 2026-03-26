@@ -18,7 +18,7 @@ const RegistrationForm = () => {
     });
 
     const params = new URLSearchParams(window.location.search);
-    const sessionId = params.get('sessionId');
+    const sessionId = params.get('ssid');
 
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -196,7 +196,7 @@ const RegistrationForm = () => {
 
         const data = await apiService.registerUser(payload);
 
-        if (data.validationCode && data.message === "Session registered successfully") {
+        if (data.validationCode && data.message && data.message.toLowerCase().includes("succes")) {
             setValidationCode(data.validationCode);
             setShowSuccessModal(true);
         }

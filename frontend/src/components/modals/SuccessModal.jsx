@@ -84,13 +84,6 @@ const SuccessModal = ({ isOpen, onClose, validationCode }) => {
                                     </div>
                                 </div>
                             )}
-
-                            <button
-                                onClick={onClose}
-                                className="w-full rounded-md bg-gray-900 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 transition-colors"
-                            >
-                                Continue to Dashboard
-                            </button>
                         </div>
                     </motion.div>
                 </React.Fragment>

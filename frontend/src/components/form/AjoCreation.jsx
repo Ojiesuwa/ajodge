@@ -51,7 +51,7 @@ function AjoCreationForm() {
 
         // Send numeric amount without commas
         const amountVal = formData.amount.replace(/,/g, "");
-        
+
         // Ensure duration mapped to label if necessary, but using raw value as per instructions
         const durationOptionsObj = durationOptions.find(o => o.value === formData.duration);
         const timeFrameLabel = durationOptionsObj ? durationOptionsObj.label : formData.duration;
@@ -65,7 +65,7 @@ function AjoCreationForm() {
         };
 
         await apiService.createAjoSession(payload);
-        
+
         setIsSubmitting(false);
         setShowSuccess(true);
       } catch (error) {
@@ -85,7 +85,7 @@ function AjoCreationForm() {
     }
     const formatted = Number(rawValue).toLocaleString('en-US');
     setFormData({ ...formData, amount: formatted });
-    
+
     // Clear error on change
     if (errors.amount) {
       setErrors(prev => ({ ...prev, amount: '' }));
@@ -121,7 +121,7 @@ function AjoCreationForm() {
   };
 
   return (
-     <div className="w-full max-w-md mx-auto p-6 md:p-8 min-h-screen flex items-center justify-center">
+    <div className="w-full max-w-md mx-auto p-6 md:p-8 min-h-screen flex items-center justify-center">
       <motion.div
         variants={containerVariants}
         initial="hidden"
@@ -347,15 +347,15 @@ function SuccessModal({ onClose }) {
         className="absolute inset-0 bg-gray-900/40 backdrop-blur-sm"
         onClick={onClose}
       />
-      
+
       {/* Modal Content */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        transition={{ 
-          type: "spring", 
-          stiffness: 300, 
+        transition={{
+          type: "spring",
+          stiffness: 300,
           damping: 25,
           mass: 0.8
         }}
@@ -366,9 +366,9 @@ function SuccessModal({ onClose }) {
               for now we construct a placeholder with Framer Motion that feels premium 
               or an actual img tag relying on public/success.gif */}
           <div className="absolute inset-0 bg-brand/20 rounded-full animate-pulse blur-xl" />
-          <img 
-            src="/success.gif" 
-            alt="Success" 
+          <img
+            src="/success.gif"
+            alt="Success"
             className="relative z-10 w-full h-full object-contain"
             onError={(e) => {
               // Fallback if the user hasn't provided the gif yet
@@ -381,7 +381,7 @@ function SuccessModal({ onClose }) {
           </div>
         </div>
 
-        <motion.h3 
+        <motion.h3
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -389,8 +389,8 @@ function SuccessModal({ onClose }) {
         >
           Ajo Created!
         </motion.h3>
-        
-        <motion.p 
+
+        <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -399,17 +399,6 @@ function SuccessModal({ onClose }) {
           Your savings group has been successfully set up. Time to start inviting members.
         </motion.p>
 
-        <motion.button
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={onClose}
-          className="w-full py-3.5 bg-gray-900 hover:bg-black text-white font-medium rounded-xl transition-colors shadow-lg shadow-gray-200"
-        >
-          View Dashboard
-        </motion.button>
       </motion.div>
     </div>
   );

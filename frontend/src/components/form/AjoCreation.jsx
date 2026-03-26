@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, CheckCircle2, AlertCircle } from "lucide-react";
 import { apiService } from "../../services/api";
+import SuccessModal from "../modals/SuccessModal";
 
 function AjoCreationForm() {
   const [formData, setFormData] = useState({
@@ -323,84 +324,15 @@ function AjoCreationForm() {
             </motion.button>
           </motion.div>
         </form>
-      </motion.div>
-
-      {/* Success Modal */}
-      <AnimatePresence>
-        {showSuccess && (
-          <SuccessModal onClose={() => setShowSuccess(false)} />
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-function SuccessModal({ onClose }) {
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/* Backdrop */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-        className="absolute inset-0 bg-gray-900/40 backdrop-blur-sm"
-        onClick={onClose}
+      </motion.div>      {/* Success Modal */}
+      <SuccessModal 
+        isOpen={showSuccess}
+        onClose={() => setShowSuccess(false)} 
+        title="Ajo Created!"
+        subtitle="Your savings group has been successfully set up. Time to start inviting members."
       />
-
-      {/* Modal Content */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        transition={{
-          type: "spring",
-          stiffness: 300,
-          damping: 25,
-          mass: 0.8
-        }}
-        className="relative w-full max-w-sm bg-white rounded-[24px] p-8 shadow-2xl overflow-hidden flex flex-col items-center text-center"
-      >
-        <div className="w-24 h-24 mb-6 relative">
-          {/* We assume a success.gif would be placed in public/success.gif, 
-              for now we construct a placeholder with Framer Motion that feels premium 
-              or an actual img tag relying on public/success.gif */}
-          <div className="absolute inset-0 bg-brand/20 rounded-full animate-pulse blur-xl" />
-          <img
-            src="/success.gif"
-            alt="Success"
-            className="relative z-10 w-full h-full object-contain"
-            onError={(e) => {
-              // Fallback if the user hasn't provided the gif yet
-              e.target.style.display = 'none';
-              e.target.nextSibling.style.display = 'flex';
-            }}
-          />
-          <div className="hidden absolute inset-0 z-10 flex items-center justify-center bg-brand rounded-full text-white">
-            <CheckCircle2 className="w-12 h-12 text-gray-900" />
-          </div>
-        </div>
-
-        <motion.h3
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-2xl font-heading font-semibold text-gray-900 mb-2"
-        >
-          Ajo Created!
-        </motion.h3>
-
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-gray-500 mb-8"
-        >
-          Your savings group has been successfully set up. Time to start inviting members.
-        </motion.p>
-
-      </motion.div>
     </div>
   );
 }
+
 export default AjoCreationForm;

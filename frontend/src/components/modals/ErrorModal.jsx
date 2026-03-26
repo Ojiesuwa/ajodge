@@ -24,7 +24,11 @@ const ErrorModal = ({ isOpen, onClose, errorMessage = "Something went wrong. Ple
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             className="fixed left-1/2 top-1/2 z-50 w-full max-w-sm -translate-x-1/2 -translate-y-1/2 p-4 outline-none"
           >
-            <div className="relative flex flex-col items-center overflow-hidden rounded-2xl bg-white p-8 shadow-2xl">
+            <motion.div 
+              animate={{ x: [0, -10, 10, -10, 10, -4, 4, 0] }}
+              transition={{ duration: 0.5, delay: 0.08 }}
+              className="relative flex flex-col items-center overflow-hidden rounded-2xl bg-white p-8 shadow-2xl"
+            >
               <button
                 onClick={onClose}
                 className="absolute right-4 top-4 rounded-full p-1 text-gray-400 hover:bg-red-50 hover:text-red-500 transition-colors"
@@ -43,18 +47,13 @@ const ErrorModal = ({ isOpen, onClose, errorMessage = "Something went wrong. Ple
                 {errorMessage}
               </p>
 
-              <div className="w-full bg-gray-50 p-4 rounded-md border border-gray-100 mb-6 flex justify-center items-center text-sm text-gray-400 italic">
-                {/* Note: User will provide the actual component here later */}
-                [Registration Failed Component Placeholder]
-              </div>
-
               <button
                 onClick={onClose}
                 className="w-full rounded-md bg-red-500 py-3 text-sm font-semibold text-white shadow-sm hover:bg-red-600 transition-colors"
               >
                 Try Again
               </button>
-            </div>
+            </motion.div>
           </motion.div>
         </React.Fragment>
       )}

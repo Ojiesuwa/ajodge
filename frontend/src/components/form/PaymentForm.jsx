@@ -8,10 +8,12 @@ import ErrorModal from '../modals/ErrorModal';
 import Button from '../ui/Button';
 
 const PaymentForm = () => {
-    const [searchParams] = useSearchParams();
-    const ssid = searchParams.get('ssid');
+    const params = new URLSearchParams(window.location.search);
+    const ssid = params.get('ssid');
 
     const [members, setMembers] = useState([]);
+    const [amountPerPerson, setAmountPerPerson] = useState(0);
+    const [amountInput, setAmountInput] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -35,6 +37,7 @@ const PaymentForm = () => {
                 const response = await apiService.getSessionMembers(ssid);
                 if (response && response.members) {
                     setMembers(response.members);
+                    setAmountPerPerson(response.amountPerPerson || 0);
                 } else {
                     setError('No members found for this session');
                 }
@@ -48,6 +51,21 @@ const PaymentForm = () => {
         // fetchMembers();
     }, [ssid]);
 
+    const handleAmountChange = (e) => {
+        const rawValue = e.target.value.replace(/[^0-9]/g, '');
+        if (!rawValue) {
+            setAmountInput('');
+            return;
+        }
+        const numValue = parseInt(rawValue, 10);
+        
+        if (numValue > amountPerPerson) {
+            setAmountInput(amountPerPerson.toLocaleString());
+        } else {
+            setAmountInput(numValue.toLocaleString());
+        }
+    };
+
     const handlePayment = async (e) => {
         e.preventDefault();
         if (!selectedMember) {
@@ -56,13 +74,26 @@ const PaymentForm = () => {
             return;
         }
 
+        const rawAmount = amountInput.replace(/,/g, '');
+        if (!rawAmount || parseInt(rawAmount, 10) <= 0) {
+            setErrorMessage('Please enter a valid amount to pay');
+            setShowErrorModal(true);
+            return;
+        }
+
+        const mindex = members.findIndex(m => m.memberId === selectedMember) + 1;
+
         setIsSubmitting(true);
         try {
-            // Mock payment API call as requested
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            await apiService.verifyPayment({
+                ssid,
+                mindex: String(mindex),
+                amount: String(rawAmount)
+            });
+            
             setShowSuccessModal(true);
         } catch (err) {
-            setErrorMessage('Payment failed. Please try again.');
+            setErrorMessage(err.message || 'Payment failed. Please try again.');
             setShowErrorModal(true);
         } finally {
             setIsSubmitting(false);
@@ -70,7 +101,6 @@ const PaymentForm = () => {
     };
 
     const currentMember = members.find(m => m.memberId === selectedMember);
-    const amountToPay = currentMember ? currentMember.payment : 0;
 
     if (loading) {
         return (
@@ -94,10 +124,10 @@ const PaymentForm = () => {
                 style={{ fontFamily: '"Inter", sans-serif' }}
             >
                 <div className="mb-8 text-center pt-4">
-                    <h1 className="text-3xl font-bold text-gray-900 tracking-tight" style={{ fontFamily: '"Tasa Orbita", sans-serif' }}>
-                        Ajo Payment
+                    <h1 className="text-3xl font-bold font-heading text-gray-900 tracking-tight">
+                        Payment Form
                     </h1>
-                    <p className="mt-2 text-sm text-gray-500 font-medium">
+                    <p className="mt-2 text-sm text-gray-500 font-medium md:text-base">
                         Select your profile to complete your payment
                     </p>
                 </div>
@@ -116,7 +146,7 @@ const PaymentForm = () => {
 
                         <div className="relative z-20">
                             <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Name of Member
+                                Select your profile
                             </label>
                             <div className="relative">
                                 <button
@@ -163,31 +193,36 @@ const PaymentForm = () => {
                             </div>
                         </div>
 
-                        <AnimatePresence mode="wait">
-                            {currentMember && (
-                                <motion.div
-                                    key="amount-display"
-                                    initial={{ opacity: 0, height: 0 }}
-                                    animate={{ opacity: 1, height: 'auto' }}
-                                    exit={{ opacity: 0, height: 0 }}
-                                    transition={{ duration: 0.3 }}
-                                    className="overflow-hidden z-10 relative"
-                                >
-                                    <div className="bg-[#f0f3f6] p-8 rounded-md border border-gray-200 text-center relative overflow-hidden group">
-                                        <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                        <p className="text-xs text-gray-500 mb-2 uppercase tracking-[0.15em] font-semibold">Amount to Pay</p>
-                                        <p className="text-5xl font-bold text-gray-900 flex items-center justify-center tracking-tight">
-                                            <span className="text-3xl mr-1.5 text-gray-400 font-normal">₦</span>
-                                            {amountToPay.toLocaleString()}
-                                        </p>
-                                    </div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
+                        <div className={`z-10 relative space-y-4 transition-all duration-300 ${!currentMember ? 'opacity-60 pointer-events-none' : 'opacity-100'}`}>
+                            {/* Amount payable per person info card */}
+                            <div className={`border p-4 rounded-md flex justify-between items-center transition-all ${!currentMember ? 'bg-gray-50 border-gray-200 grayscale' : 'bg-emerald-50/50 border-emerald-100'}`}>
+                                <span className={`text-sm font-medium ${!currentMember ? 'text-gray-500' : 'text-emerald-800'}`}>Amount Payable</span>
+                                <span className={`text-lg font-bold tracking-tight ${!currentMember ? 'text-gray-400' : 'text-emerald-900'}`}>
+                                    ₦{amountPerPerson.toLocaleString()}
+                                </span>
+                            </div>
+                            
+                            {/* Amount to Pay Input */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Amount to Pay
+                                </label>
+                                <div className="relative">
+                                    <span className={`absolute left-4 top-1/2 -translate-y-1/2 font-medium text-lg ${!currentMember ? 'text-gray-400' : 'text-gray-500'}`}>₦</span>
+                                    <input
+                                        type="text"
+                                        value={amountInput}
+                                        onChange={handleAmountChange}
+                                        disabled={!currentMember}
+                                        className={`w-full pl-10 pr-4 py-3.5 border rounded-md transition-all duration-200 focus:outline-none text-lg font-semibold placeholder:font-normal ${!currentMember ? 'bg-gray-50 border-gray-200 text-gray-400 placeholder:text-gray-300 cursor-not-allowed' : 'bg-white border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-transparent focus:shadow-sm hover:border-gray-300 text-gray-900 placeholder:text-gray-300'}`}
+                                        placeholder="e.g. 10,000"
+                                    />
+                                </div>
+                            </div>
+                        </div>
 
                         <div className="pt-2 z-10 relative">
                             <Button type="submit" isLoading={isSubmitting} className="w-full flex justify-center items-center py-4 rounded-md shadow-lg shadow-gray-900/10 hover:shadow-gray-900/20 transition-all font-semibold text-base">
-                                <CreditCard className="w-5 h-5 mr-2.5" />
                                 Proceed to Complete Payment
                             </Button>
                         </div>
@@ -198,6 +233,8 @@ const PaymentForm = () => {
             <SuccessModal
                 isOpen={showSuccessModal}
                 onClose={() => setShowSuccessModal(false)}
+                title="Payment Successful"
+                subtitle="Congratulations, your payment has been sucessfully recieved by Ajodge."
             />
 
             <ErrorModal

@@ -1,6 +1,7 @@
 const CLIENT_ID = "IKIA6C05FC6BEFFA6300DB809C2CBAD4B457F1592218";
 const SECRET_KEY = "1A0C59766BEC8C04A40F2B9052D1E1C1AF2AEA6C";
 
+const BASE_URL = "https://ffb5-105-113-99-50.ngrok-free.app/api/session"; 
 let tokenCache = {
   accessToken: null,
   expiresAt: null,
@@ -52,8 +53,26 @@ export const apiService = {
       body: JSON.stringify({ ssid })
     };
 
-    const response = await fetch('https://e334-105-113-109-55.ngrok-free.app/api/session/members', requestOptions);
+    const response = await fetch(`${BASE_URL}/members`, requestOptions);
     
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+  },
+
+  /* Verifies payment */
+  verifyPayment: async (data) => {
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    };
+
+    const response = await fetch(`${BASE_URL}/payment-verification`, requestOptions);
+
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
       throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
@@ -74,7 +93,7 @@ export const apiService = {
       body: JSON.stringify(data)
     };
 
-    const response = await fetch('https://ffb5-105-113-99-50.ngrok-free.app/api/session/create', requestOptions);
+    const response = await fetch(`${BASE_URL}/create`, requestOptions);
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
@@ -96,7 +115,7 @@ export const apiService = {
       body: JSON.stringify(formData)
     };
 
-    const response = await fetch('https://ffb5-105-113-99-50.ngrok-free.app/api/session/register', requestOptions);
+    const response = await fetch(`${BASE_URL}/register`, requestOptions);
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));

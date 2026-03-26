@@ -42,7 +42,7 @@ const PaymentForm = () => {
                     setError('No members found for this session');
                 }
             } catch (err) {
-                setError(err.message || 'Failed to fetch members');
+                setError(err.message || "We couldn't retrieve the members list right now. Please check your network connection and refresh.");
             } finally {
                 setLoading(false);
             }
@@ -93,7 +93,7 @@ const PaymentForm = () => {
             
             setShowSuccessModal(true);
         } catch (err) {
-            setErrorMessage(err.message || 'Payment failed. Please try again.');
+            setErrorMessage(err.message || "We couldn't process your payment right now. Please try submitting again.");
             setShowErrorModal(true);
         } finally {
             setIsSubmitting(false);
@@ -215,7 +215,7 @@ const PaymentForm = () => {
                                         onChange={handleAmountChange}
                                         disabled={!currentMember}
                                         className={`w-full pl-10 pr-4 py-3.5 border rounded-md transition-all duration-200 focus:outline-none text-lg font-semibold placeholder:font-normal ${!currentMember ? 'bg-gray-50 border-gray-200 text-gray-400 placeholder:text-gray-300 cursor-not-allowed' : 'bg-white border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-transparent focus:shadow-sm hover:border-gray-300 text-gray-900 placeholder:text-gray-300'}`}
-                                        placeholder="e.g. 10,000"
+                                        placeholder="e.g.10,000"
                                     />
                                 </div>
                             </div>
@@ -240,6 +240,7 @@ const PaymentForm = () => {
             <ErrorModal
                 isOpen={showErrorModal}
                 onClose={() => setShowErrorModal(false)}
+                title="Payment Failed"
                 errorMessage={errorMessage}
             />
         </>

@@ -2,7 +2,7 @@ import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, AlertCircle } from 'lucide-react';
 
-const ErrorModal = ({ isOpen, onClose, errorMessage = "Something went wrong. Please try again." }) => {
+const ErrorModal = ({ isOpen, onClose, title = "Oops! Something went wrong", errorMessage = "We couldn't process your request right now. Please try again." }) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -41,9 +41,9 @@ const ErrorModal = ({ isOpen, onClose, errorMessage = "Something went wrong. Ple
               </div>
 
               <h2 className="mb-2 text-center text-2xl font-bold text-gray-900">
-                Registration Failed
+                {title}
               </h2>
-              <p className="text-center text-sm text-gray-500 mb-6">
+              <p className="text-center text-sm text-gray-500 mb-6 font-medium">
                 {errorMessage}
               </p>
 

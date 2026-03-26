@@ -72,7 +72,7 @@ function AjoCreationForm() {
       } catch (error) {
         console.error("Failed to create Ajo session:", error);
         setIsSubmitting(false);
-        setErrors(prev => ({ ...prev, submit: error.message || "Failed to create Ajo session. Please try again." }));
+        setErrors(prev => ({ ...prev, submit: error.message || "We couldn't setup your Ajo group right now. Please test your connection and try again." }));
       }
     }
   };

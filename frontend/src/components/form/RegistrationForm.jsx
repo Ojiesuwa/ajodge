@@ -6,6 +6,8 @@ import Button from '../ui/Button';
 import SuccessModal from '../modals/SuccessModal';
 import ErrorModal from '../modals/ErrorModal';
 import { apiService } from '../../services/api';
+import { Ring2 } from 'ldrs/react'
+import 'ldrs/react/Ring2.css'
 
 const RegistrationForm = () => {
     const [formData, setFormData] = useState({
@@ -69,7 +71,7 @@ const RegistrationForm = () => {
                     setErrors(prev => ({ ...prev, nin: "NIN Verification Failed. Details did not match." }));
                 }
             } catch (err) {
-                setErrors(prev => ({ ...prev, nin: "NIN Verification failed: " + err.message }));
+                setErrors(prev => ({ ...prev, nin: err.message || "We couldn't verify your NIN right now. Please test your network connection and try again." }));
             } finally {
                 setIsNinVerifying(false);
             }
@@ -114,7 +116,7 @@ const RegistrationForm = () => {
                     setErrors(prev => ({ ...prev, accountNumber: "Account Verification Failed. Invalid account details." }));
                 }
             } catch (err) {
-                setErrors(prev => ({ ...prev, accountNumber: "Account Verification failed: " + err.message }));
+                setErrors(prev => ({ ...prev, accountNumber: err.message || "We couldn't verify your account right now. Please test your network connection and try again." }));
             } finally {
                 setIsAccountVerifying(false);
             }
@@ -175,7 +177,7 @@ const RegistrationForm = () => {
             await pushUserData();
         } catch (error) {
             console.error("Submission failed:", error);
-            setErrorMessage(error.message || "An unexpected error occurred");
+            setErrorMessage(error.message || "We encountered an unexpected issue while signing you up. Please double-check your details and try again.");
             setShowErrorModal(true);
         } finally {
             setIsSubmitting(false);
@@ -201,7 +203,7 @@ const RegistrationForm = () => {
             setShowSuccessModal(true);
         }
         else {
-            setErrorMessage(data.message || "Registration failed");
+            setErrorMessage(data.message || "We couldn't complete your registration right now. Please try again.");
             setShowErrorModal(true);
         }
         return data;
@@ -259,7 +261,17 @@ const RegistrationForm = () => {
                             disabled={isNinVerifying}
                         />
                         {isNinVerifying && (
-                            <p className="text-sm text-brand mt-1 animate-pulse">Verifying NIN...</p>
+                            <p className="text-sm text-gray-500 mt-1 animate-pulse flex items-center gap-2">
+                                <Ring2
+                                    size="20"
+                                    stroke="2"
+                                    strokeLength="0.6"
+                                    bgOpacity="0"
+                                    speed="0.9"
+                                    color="black"
+                                />
+                                Verifying NIN...
+                            </p>
                         )}
                         {ninVerificationMessage && (
                             <p className="text-sm text-green-600 mt-1 font-medium">{ninVerificationMessage}</p>
@@ -318,6 +330,7 @@ const RegistrationForm = () => {
             <ErrorModal
                 isOpen={showErrorModal}
                 onClose={() => setShowErrorModal(false)}
+                title="Registration Failed"
                 errorMessage={errorMessage}
             />
         </>

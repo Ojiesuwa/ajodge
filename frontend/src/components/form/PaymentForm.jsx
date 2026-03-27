@@ -81,7 +81,7 @@ const PaymentForm = () => {
             return;
         }
 
-        const mindex = members.findIndex(m => m.memberId === selectedMember) + 1;
+        const mindex = members.findIndex(m => m.memberId === selectedMember);
 
         setIsSubmitting(true);
         try {
@@ -198,7 +198,7 @@ const PaymentForm = () => {
                             <div className={`border p-4 rounded-md flex justify-between items-center transition-all ${!currentMember ? 'bg-gray-50 border-gray-200 grayscale' : 'bg-emerald-50/50 border-emerald-100'}`}>
                                 <span className={`text-sm font-medium ${!currentMember ? 'text-gray-500' : 'text-emerald-800'}`}>Amount Payable</span>
                                 <span className={`text-lg font-bold tracking-tight ${!currentMember ? 'text-gray-400' : 'text-emerald-900'}`}>
-                                    ₦{amountPerPerson.toLocaleString()}
+                                    ₦{(!currentMember ? amountPerPerson : Math.max(0, amountPerPerson - (currentMember.payment || 0))).toLocaleString()}
                                 </span>
                             </div>
                             

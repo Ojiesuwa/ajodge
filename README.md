@@ -2,6 +2,8 @@
 
 A Telegram-integrated web application for creating and managing Ajo (thrift/rotational savings) groups.
 
+Created for the [Enyata Hackathon 2026](https://buildathon.enyata.com/)
+
 ## Overview
 
 Ajodge allows users to create and manage Ajo savings groups directly through Telegram. Users can create groups, set up contribution amounts and durations, register members, and track payments.

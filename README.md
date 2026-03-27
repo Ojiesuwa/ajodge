@@ -121,6 +121,10 @@ npm run build
 | `/ajo-payment` | Payment form |
 | `/ajo-registration` | Registration form |
 
+## Live Demo
+
+🔗https://youtu.be/iWRhIrix6cY
+
 ## License
 
 ISC

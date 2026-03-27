@@ -1,0 +1,6 @@
+class SessionMember{
+  members 
+  constructor(){
+
+  }
+} 

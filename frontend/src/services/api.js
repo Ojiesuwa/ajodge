@@ -1,7 +1,7 @@
 const CLIENT_ID = "IKIA6C05FC6BEFFA6300DB809C2CBAD4B457F1592218";
 const SECRET_KEY = "1A0C59766BEC8C04A40F2B9052D1E1C1AF2AEA6C";
 
-const BASE_URL = "https://ajodge-server.onrender.com/api/session/"; 
+const BASE_URL = "https://ajodge-server.onrender.com/api/session"; 
 let tokenCache = {
   accessToken: null,
   expiresAt: null,

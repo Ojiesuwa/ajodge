@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import RegistrationForm from './components/form/RegistrationForm';
 import PaymentForm from './components/form/PaymentForm';
+import Payout from './components/form/Payout';
 import AjoCreationForm from './components/form/AjoCreation';
 import './App.css';
 
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<AjoCreationForm />} />
           <Route path="/ajo-payment" element={<PaymentForm />} />
           <Route path="/ajo-registration" element={<RegistrationForm />} />
+          <Route path="/ajo-payout" element={<Payout />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>

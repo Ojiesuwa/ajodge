@@ -57,9 +57,10 @@ export const apiService = {
     
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
+      console.error(`Error fetching session members: ${errorData.message || response.status}`);
       throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
     }
-
+    
     return await response.json();
   },
 

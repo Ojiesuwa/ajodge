@@ -26,11 +26,11 @@ const PaymentForm = () => {
     const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
-        // if (!ssid) {
-        //     setError('Invalid session ID. Please ensure the link is correct.');
-        //     setLoading(false);
-        //     return;
-        // }
+        if (!ssid) {
+            setError('Invalid session ID. Please ensure the link is correct.');
+            setLoading(false);
+            return;
+        }
 
         const fetchMembers = async () => {
             try {
@@ -48,7 +48,7 @@ const PaymentForm = () => {
             }
         };
 
-        // fetchMembers();
+        fetchMembers();
     }, [ssid]);
 
     const handleAmountChange = (e) => {

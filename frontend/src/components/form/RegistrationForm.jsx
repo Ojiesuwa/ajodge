@@ -261,7 +261,7 @@ const RegistrationForm = () => {
                             disabled={isNinVerifying}
                         />
                         {isNinVerifying && (
-                            <p className="text-sm text-gray-500 mt-1 animate-pulse flex items-center gap-2">
+                            <p className="text-sm text-gray-500 mt-1 animate-pulse flex items-center gap-2 mt-2">
                                 <Ring2
                                     size="20"
                                     stroke="2"
@@ -270,7 +270,7 @@ const RegistrationForm = () => {
                                     speed="0.9"
                                     color="black"
                                 />
-                                Verifying NIN...
+                                Verifying NIN
                             </p>
                         )}
                         {ninVerificationMessage && (
@@ -303,7 +303,17 @@ const RegistrationForm = () => {
                             disabled={isAccountVerifying}
                         />
                         {isAccountVerifying && (
-                            <p className="text-sm text-brand mt-1 animate-pulse">Verifying Account...</p>
+                               <p className="text-sm text-gray-500 mt-1 animate-pulse flex items-center gap-2 mt-2">
+                                <Ring2
+                                    size="20"
+                                    stroke="2"
+                                    strokeLength="0.6"
+                                    bgOpacity="0"
+                                    speed="0.9"
+                                    color="black"
+                                />
+                                Verifying Account
+                            </p>
                         )}
                         {accountVerificationMessage && (
                             <div className="mt-1">
